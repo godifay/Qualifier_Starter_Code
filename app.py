@@ -10,6 +10,7 @@ import sys
 import fire
 import questionary
 from pathlib import Path
+import csv
 
 from qualifier.utils.fileio import load_csv
 
@@ -112,6 +113,19 @@ def save_qualifying_loans(qualifying_loans):
     # YOUR CODE HERE!
 
 
+    with open('qualifying_loans_output.csv',"w") as csv_file :
+        writer = csv.writer(csv_file)
+        writer.writerow(header)
+        for loan in inexpensive_loans:
+            row = []
+            row.append(loan["loan_price"])
+            row.append(loan["remaining_months"])
+            row.append(loan["repayment_interval"])
+            row.append(loan["future_value"])
+            writer.writerow(row)
+            print(row)
+
+
 def run():
     """The main function for running the script."""
 
@@ -126,8 +140,9 @@ def run():
         bank_data, credit_score, debt, income, loan_amount, home_value
     )
 
+    print(qualifying_loans)
     # Save qualifying loans
-    save_qualifying_loans(qualifying_loans)
+    ##save_qualifying_loans(qualifying_loans)
 
 
 if __name__ == "__main__":
