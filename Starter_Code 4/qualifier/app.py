@@ -6,8 +6,9 @@ This is a command line application to match applicants with qualifying loans.
 Example:
     $ python app.py
 """
-import sys
-import fire
+import sys,os
+print('path:', os.getcwd())
+#import fire
 import questionary
 from pathlib import Path
 import csv
@@ -35,7 +36,8 @@ def load_bank_data():
     csvpath = questionary.text("Enter a file path to a rate-sheet (.csv):").ask()
     csvpath = Path(csvpath)
     if not csvpath.exists():
-        sys.exit(f"Oops! Can't find this path: {csvpath}")
+        print(f"hello")
+        sys.exit("Oops! Can't find this path: ", csvpath)
 
     return load_csv(csvpath)
 
@@ -102,7 +104,7 @@ def find_qualifying_loans(bank_data, credit_score, debt, income, loan, home_valu
 
     return bank_data_filtered
 
-
+# Usability #1
 def save_qualifying_loans(qualifying_loans):
     """Saves the qualifying loans to a CSV file.
 
@@ -111,19 +113,33 @@ def save_qualifying_loans(qualifying_loans):
     """
     # @TODO: Complete the usability dialog for savings the CSV Files.
     # YOUR CODE HERE!
+    # Acceptance #2
+    if len(qualifying_loans)==0:
+        sys.exit('Sorry, there are no loans for your data.')
 
+    # answering the Y/N
 
-    with open('qualifying_loans_output.csv',"w") as csv_file :
-        writer = csv.writer(csv_file)
-        writer.writerow(header)
-        for loan in inexpensive_loans:
-            row = []
-            row.append(loan["loan_price"])
-            row.append(loan["remaining_months"])
-            row.append(loan["repayment_interval"])
-            row.append(loan["future_value"])
-            writer.writerow(row)
-            print(row)
+    #path = "/Users/eliasgodifay/desktop/challenge2/Starter_Code 4/qualifier/data/q_loans.csv"
+    # Usability CLI bullet no 1,2 and 3 
+
+    # Usability #2,  Acceptance #1, #3
+    prompt = 'Would you like to save the loan info? y/n '
+    #do_save = questionary.confirm('y').ask(prompt)
+    answer = input(prompt)
+    if answer.lower()[0] != 'y':
+        print('Goodbye!')
+        return  # leave this function
+
+    # Usability 3,  Acceptance 4 and 5 
+    # get path to save loan data to csv
+    csvpath = questionary.text("Enter a file save path including .csv extension: ").ask()
+    csvpath = Path(csvpath)
+
+    with open(csvpath, 'w') as csv_file:
+        wr = csv.writer(csv_file)
+        for row in qualifying_loans:
+            wr.writerow(row)
+    print('WROTE TO:', csvpath)
 
 
 def run():
@@ -140,10 +156,13 @@ def run():
         bank_data, credit_score, debt, income, loan_amount, home_value
     )
 
-    print(qualifying_loans)
+    for x in qualifying_loans:
+        print(x)
+    # /Users/eliasgodifay/desktop/challenge2/Starter_Code 4/qualifier/data/daily_rate_sheet.csv
     # Save qualifying loans
-    ##save_qualifying_loans(qualifying_loans)
+    save_qualifying_loans(qualifying_loans)
 
 
 if __name__ == "__main__":
-    fire.Fire(run)
+    #fire.Fire(run)  # TEMP what is this 'fire'?
+    run()
