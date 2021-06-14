@@ -104,6 +104,23 @@ def find_qualifying_loans(bank_data, credit_score, debt, income, loan, home_valu
 
     return bank_data_filtered
 
+def save_csv(qualifying_loans, csvpath):
+
+    """Saves the qualifying loans to a CSV file.
+
+    Args:
+        qualifying_loans (list of lists): The qualifying bank loans.
+    """
+    
+
+    with open(csvpath, 'w') as csv_file:
+        wr = csv.writer(csv_file)
+        for row in qualifying_loans:
+            wr.writerow(row)
+    print('WROTE TO:', csvpath)
+
+
+
 # Usability #1
 def save_qualifying_loans(qualifying_loans):
     """Saves the qualifying loans to a CSV file.
@@ -164,5 +181,5 @@ def run():
 
 
 if __name__ == "__main__":
-    #fire.Fire(run)  # TEMP what is this 'fire'?
+    #fire.Fire(run)  
     run()

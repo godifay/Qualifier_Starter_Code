@@ -8,6 +8,7 @@ import csv
 
 
 def load_csv(csvpath):
+
     """Reads the CSV file from path provided.
 
     Args:
@@ -28,3 +29,9 @@ def load_csv(csvpath):
         for row in csvreader:
             data.append(row)
     return data
+    
+def save_csv(csvpath, data,header=None):
+    with open(csvpath, "w") as csvfile:
+        data = []
+        csvreader = csv.writer(csvfile, delimimter= ",")
+
